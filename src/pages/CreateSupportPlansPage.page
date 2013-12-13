@@ -1,0 +1,4 @@
+<apex:page standardController="Needs_Assessment__c" extensions="CreateSupportPlans" showHeader="true" action="{!createPlans}">
+{!Needs_Assessment__c.Name}
+<apex:messages />
+</apex:page>

@@ -1,0 +1,30 @@
+<apex:page standardcontroller="Contact" Extensions="OutcomeWheelChartController" title="Outcome Wheel Chart for traditional 10 point outcome wheel" action="{!extractData}">
+    <apex:pageBlock >
+    <apex:pageBlockSection >
+          <apex:pageBlockSectionItem >
+          
+          </apex:pageBlockSectionItem>
+
+          <apex:pageBlockSectionItem />
+      </apex:pageBlockSection>
+    <apex:chart height="250" width="700" legend="true" data="{!wheeldata}" rendered="{!anyData}">
+        <apex:legend position="left"/>
+        <apex:axis type="Radial" position="radial" minimum="0" maximum="10">
+        
+            <apex:chartLabel />
+            
+        </apex:axis>
+        <apex:radarSeries xField="name" yField="data1" title="Initial" tips="true" opacity="0.4"/>
+        <apex:radarSeries xField="name" yField="data2" title="First Review" tips="true" markerType="cross" strokeWidth="2" strokeColor="#f33" opacity="0.4"/>
+        <apex:radarSeries xField="name" yField="data3" title="Second Review" tips="true" opacity="0.4"/>
+        <apex:radarSeries xField="name" yField="data4" title="Departure" tips="true" markerType="cross" strokeWidth="2" strokeColor="#f33" opacity="0.4"/>
+    </apex:chart>
+    <apex:pageBlockSection >
+          <apex:pageBlockSectionItem >
+          
+          </apex:pageBlockSectionItem>
+
+          <apex:pageBlockSectionItem />
+      </apex:pageBlockSection>
+    </apex:pageBlock>
+ </apex:page>

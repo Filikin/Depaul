@@ -1,0 +1,4 @@
+<apex:page standardController="Risk_Assessment__c" extensions="CreateRiskMgtPlans" showHeader="true" action="{!createPlans}">
+{!Risk_Assessment__c.Name}
+<apex:messages />
+</apex:page>

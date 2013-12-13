@@ -1,0 +1,17 @@
+<apex:page controller="AvrReportController"  cache="true" 
+contentType="text/csv#averageoutcomewheel.csv" showHeader="false" sidebar="false">
+Break down of outcome wheel averages across the organization.
+
+ ,Overall Average,Average First,Average Last,Average Progress Since First
+1 Drug and Alcohol misuse,{!master.Ovr_Average_1__c},{!master.Avr_First_1__c},{!master.Avr_Last_1__c},{!master.Difference_1__c}
+2 Emotional and mental health,{!master.Ovr_Average_2__c},{!master.Avr_First_2__c},{!master.Avr_Last_2__c},{!master.Difference_2__c}
+3 Managing money,{!master.Ovr_Average_3__c},{!master.Avr_First_3__c},{!master.Avr_Last_3__c},{!master.Difference_3__c}
+4 Managing tenancy/accommodation,{!master.Ovr_Average_4__c},{!master.Avr_First_4__c},{!master.Avr_Last_4__c},{!master.Difference_4__c}
+5 Meaningful use of time, {!master.Ovr_Average_5__c},{!master.Avr_First_5__c},{!master.Avr_Last_5__c},{!master.Difference_5__c}
+6 Motivation and taking responsibility, {!master.Ovr_Average_6__c},{!master.Avr_First_6__c},{!master.Avr_Last_6__c},{!master.Difference_6__c}
+7 Offending, {!master.Ovr_Average_7__c},{!master.Avr_First_7__c},{!master.Avr_Last_7__c},{!master.Difference_7__c}
+8 Physical health, {!master.Ovr_Average_8__c},{!master.Avr_First_8__c},{!master.Avr_Last_8__c},{!master.Difference_8__c}
+9 Self-Care and living skills, {!master.Ovr_Average_9__c},{!master.Avr_First_9__c},{!master.Avr_Last_9__c},{!master.Difference_9__c}
+10 Social networks and relationships, {!master.Ovr_Average_10__c},{!master.Avr_First_10__c},{!master.Avr_Last_10__c},{!master.Difference_10__c}
+Totals, {!master.Overall_Average__c},{!master.Overall_First_Average__c},{!master.Overall_Last_Average__c},{!master.Overall_Difference__c}
+</apex:page>

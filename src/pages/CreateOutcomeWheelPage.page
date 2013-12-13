@@ -1,0 +1,36 @@
+<apex:page standardcontroller="Outcome_Wheel__c" title="Dynamic page for creating Outcome Wheels">
+<apex:pageBlock id="xxxpb1">
+
+<apex:pageBlockSection >
+                    
+<apex:actionRegion >               
+ <apex:form >
+  <apex:inputField id="xxxif1" value="{!Outcome_Wheel__c.What_kind_of_Outcome_Wheel__c}" required="true" >
+
+     <apex:actionSupport event="onchange" rerender="xxxpb1" />
+  </apex:inputField>
+
+
+</apex:form>
+</apex:actionRegion>
+                 
+</apex:pageBlockSection>
+
+               
+<apex:pageBlockSection id="xxxpbs1" >
+<apex:form >
+ <apex:inputField id="xxxif2" value="{!Outcome_Wheel__c.X1__c}" 
+ label="Drug use:" rendered="{IF(ISPICKVAL(Outcome_Wheel__c.What_kind_of_Outcome_Wheel__c, 'Traditional 10 Point'),'true','false')}" />
+</apex:form>
+</apex:pageBlockSection>
+
+<apex:pageBlockSection id="xxxpbs2" rendered="true">
+<apex:form >
+  <apex:inputField id="xxxif3" value="{!Outcome_Wheel__c.X8__c}" 
+  rendered="{IF(TEXT(Outcome_Wheel__c.What_kind_of_Outcome_Wheel__c) = 'Drug and Alcohol 10 Point','true','false')}"/>  
+</apex:form>                                                           
+</apex:pageBlockSection>
+
+</apex:PageBlock>
+ 
+</apex:page>

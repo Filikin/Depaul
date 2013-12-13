@@ -1,0 +1,63 @@
+<apex:page controller="ShowChecksForNextHour" action="{!loadChecks}">
+    <script type="text/javascript" >
+        function reDraw()
+        {
+            rerenderResults();
+        }
+    </script>
+    <apex:form >
+        <apex:actionFunction name="rerenderResults" action="{!loadChecks}" rerender="pnlSearchResults" />
+        <apex:outputPanel id="page" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+            <apex:actionRegion >  
+                <apex:outputPanel id="top" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+                    Building: <apex:selectList value="{!building}" multiselect="false" style="width:170px" size="1" onchange="reDraw();">
+                        <apex:selectOptions value="{!buildings}"/> 
+                     </apex:selectList>
+                </apex:outputPanel>
+     
+                <apex:outputPanel id="pnlSearchResults" style="margin:10px;height:80%;overflow-Y:auto;" layout="block">
+                    <apex:pageBlock id="searchResults"> 
+                        <apex:pageMessages />
+                        <apex:pageBlockTable value="{!wellbeingChecks}" var="a" id="tblResults">
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:outputPanel >{!building} Check</apex:outputPanel>
+                                </apex:facet>
+                                <apex:outputLink value="/{!a.ID}">{!a.Name}</apex:outputLink>
+                            </apex:column>
+                            <apex:column > 
+                                <apex:facet name="header">
+                                    <apex:outputPanel >Time of Check</apex:outputPanel>
+                                </apex:facet>
+                                <apex:outputText value=" {!a.Time_of_Check__c}"/>
+                            </apex:column>
+                            <apex:column > 
+                                <apex:facet name="header">
+                                    <apex:outputPanel >Room</apex:outputPanel>
+                                </apex:facet>
+                                {!a.Room__c}
+                            </apex:column>
+                            <apex:column > 
+                                <apex:facet name="header">
+                                    <apex:outputPanel >Service User</apex:outputPanel>
+                                </apex:facet>
+                                <apex:outputLink value="/{!a.Residency__r.Service_User__r.ID}">{!a.Service_User_Name__c}</apex:outputLink>
+                            </apex:column>
+                            <apex:column > 
+                                <apex:facet name="header">
+                                    <apex:outputPanel >Wellbeing Status</apex:outputPanel>
+                                </apex:facet>
+                                <apex:selectRadio layout="lineDirection" value="{!a.Wellbeing_Status__c}">
+    				           		<apex:selectOptions value="{!WellBeingStatusValues}"/>
+        						</apex:selectRadio>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                        <apex:pageBlockButtons id="settingsbuttons">
+                            <apex:commandButton id="updatebutton" action="{!updateChecks}" value="Update the Checks" /> 
+                        </apex:pageBlockButtons> 
+                    </apex:pageBlock>
+                </apex:outputPanel>
+            </apex:actionRegion>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

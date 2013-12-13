@@ -1,0 +1,76 @@
+<apex:page controller="ShowItemChecksForNextHour" action="{!loadChecks}" docType="html-5.0">
+    <script type="text/javascript" >
+        function reDraw()
+        {
+            rerenderResults();
+        }
+    </script>
+    <apex:form >
+        <apex:actionFunction name="rerenderResults" action="{!loadChecks}" rerender="pnlSearchResults" />
+        <apex:outputPanel id="page" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+            <apex:actionRegion >  
+                <apex:outputPanel id="top" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+                    Building: <apex:selectList value="{!building}" multiselect="false" style="width:170px" size="1" onchange="reDraw();">
+                        <apex:selectOptions value="{!buildings}"/> 
+                    </apex:selectList>
+                </apex:outputPanel>
+     
+                <apex:outputPanel id="pnlSearchResults" style="margin:10px;height:80%;overflow-Y:auto;" layout="block">
+                    <apex:pageBlock id="searchResults"> 
+                        <apex:pageMessages />
+                        <apex:pageBlockTable value="{!itemChecks}" var="a" id="tblResults">
+                            <apex:column > 
+                                <apex:facet name="header">
+                                    <apex:outputPanel >Area</apex:outputPanel>
+                                </apex:facet>
+                                {!a.Area__c}
+                            </apex:column>
+                            <apex:column > 
+                                <apex:facet name="header">
+                                    <apex:outputPanel >Area Item</apex:outputPanel>
+                                </apex:facet>
+                                {!a.Area_Item__r.Name}
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:outputPanel >Time of Check</apex:outputPanel>
+                                </apex:facet>
+                                <apex:outputLink value="/{!a.ID}"><apex:outputText value=" {!a.Time_of_Check__c}"/></apex:outputLink>
+                            </apex:column>
+                            <apex:column > 
+                                <apex:facet name="header">
+                                    <apex:outputPanel >Current Status</apex:outputPanel>
+                                </apex:facet>
+                                {!a.Current_Status_of_Item__c}
+                            </apex:column>
+                            <apex:column > 
+                                <apex:facet name="header">
+                                    <apex:outputPanel >Result</apex:outputPanel>
+                                </apex:facet>
+                                 <apex:selectRadio layout="lineDirection" value="{!a.Result__c}">
+    				           		<apex:selectOptions value="{!ItemStatusValues}"/>
+        						</apex:selectRadio>
+                            </apex:column>
+                            <apex:column > 
+                                <apex:facet name="header">
+                                    <apex:outputPanel >Comment</apex:outputPanel>
+                                </apex:facet>
+                                <apex:inputField value="{!a.Item_Check_Comment__c}"/>
+                            </apex:column>
+                            <apex:column > 
+                                <apex:facet name="header">
+                                    <apex:outputPanel >Type of Hazard</apex:outputPanel>
+                                </apex:facet>
+                                <apex:inputField value="{!a.Type_of_Hazard__c}"/>
+                            </apex:column>
+                            	
+                      </apex:pageBlockTable>
+                        <apex:pageBlockButtons id="settingsbuttons">
+                            <apex:commandButton id="updatebutton" action="{!updateChecks}" value="Update the Checks" /> 
+                        </apex:pageBlockButtons> 
+                    </apex:pageBlock>
+                </apex:outputPanel>
+            </apex:actionRegion>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

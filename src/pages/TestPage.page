@@ -1,0 +1,6 @@
+<apex:page standardController="Outcome_Wheel__c">
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  <apex:outputText value="{!Outcome_Wheel__c.Status__c}"/>
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>
