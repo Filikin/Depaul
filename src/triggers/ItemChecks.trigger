@@ -12,13 +12,13 @@ trigger ItemChecks on Item_Check__c (after update)
 	
 	for (Item_Check__c oneItem: trigger.new)
 	{
-		if (oneItem.Result__c != null && oneItem.Result__c != 'Hazard') areaIDs.add(oneItem.Area_Item__c);
+		if (oneItem.Result__c != null && oneItem.Result__c != 'Hazard Only') areaIDs.add(oneItem.Area_Item__c);
 	}
 	Map<ID,Area_Item__c>areasMap = new Map<ID,Area_Item__c>([select ID, Name, Maintenance_Status__c from Area_Item__c where ID in :areaIDs]);
 	for (Item_Check__c oneItem: trigger.new)
 	{
 		Item_Check__c oldItem = trigger.oldMap.get (oneItem.id);
-		if (oneItem.Result__c != null && oneItem.Result__c != 'Hazard' && oldItem != null && oldItem.Result__c != oneItem.Result__c)
+		if (oneItem.Result__c != null && oneItem.Result__c != 'Hazard Only' && oldItem != null && oldItem.Result__c != oneItem.Result__c)
 		{
 			Area_Item__c area = areasMap.get(oneItem.Area_Item__c);
 			if (area != null)

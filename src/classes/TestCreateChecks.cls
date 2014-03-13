@@ -1,3 +1,7 @@
+/*
+Author: Eamon Kelly, Enclude
+Purpose: Testing Residency and Item checks	
+*/
 @isTest
 private class TestCreateChecks 
 {
@@ -29,7 +33,7 @@ private class TestCreateChecks
 		List<Frequency__c>fqs = new List<Frequency__c>();
 		for (Integer i=1; i<=freqCount; i++)
 		{
-			fqs.add (new Frequency__c (Name='Frequency'+i));
+			fqs.add (new Frequency__c (Name='Frequency'+i, Default_for__c='Back Lane'));
 		}
 		insert fqs;
 		for (Integer i=0; i<freqCount; i++)
@@ -47,7 +51,7 @@ private class TestCreateChecks
 		List<Residency__c>res = new List<Residency__c>();
 		for (Integer i=1; i<=resCount; i++)
 		{
-			res.add (new Residency__c (Name='Residency'+i, Service_User__c=users[i-1].id, Residency_Status__c='Resident', Arrival_Date__c=system.today()-i, Departure_Date__c=system.today()+i));
+			res.add (new Residency__c (Name='Residency'+i, Service_User__c=users[i-1].id, Residency_Status__c='Resident', Date_of_Referral__c=system.today()-i, Departure_Date__c=system.today()+i, Building__c='Back Lane'));
 		}
 		insert res;
 		return res;
@@ -88,10 +92,10 @@ private class TestCreateChecks
 	
     static testMethod void testCheckCreation() 
     {
-    	Integer creationCount = 10;
+    	Integer creationCount = 2;
+    	List<Frequency__c> freqs = CreateFrequencies (creationCount);
     	List<Contact> serviceUsers = CreateServiceUsers (creationCount);
     	List<Residency__c> res = CreateResidencies (creationCount, serviceUsers);
-    	List<Frequency__c> freqs = CreateFrequencies (creationCount);
     	CreateWellbeingCheckFrequencies (creationCount, res, freqs);
     	List<Area_Item__c> areaItems = CreateAreaItems (creationCount);
     	system.debug ('Area items created: ' + areaItems.size());

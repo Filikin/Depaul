@@ -117,7 +117,7 @@ public with sharing class CreateSupportPlans
 	    	Contact client = new Contact (FirstName='Test', LastName='Client' + i);
 	    	insert client;
 	    	
-	        needsAss = new Needs_Assessment__c (Service_User_Name__c=client.id);
+	        needsAss = new Needs_Assessment__c (Name='x', Service_User_Name__c=client.id);
 	        needsAss.Accommodation_Needs_Support_Plan_Needed__c = true;
 	        needsAss.Accommodation_Needs_Assessment__c = 'Find housing';
 	        needsAss.Alcohol_Use_Support_Plan_Needed__c = true;

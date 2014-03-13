@@ -4,6 +4,7 @@ public with sharing class CreateFutureChecks
 // Checks will be on the nearest hour or half hour
 // for every Wellbeing Check Frequency generate a Wellbeing Check for that resident 
 // for every Item Check Frequency...
+// Removed the restriction to only generate checks for items with the maintenance status = OK
 	public DateTime startTime, endTime;
 	public String dayName;
 	public Integer WellbeingNumberCreated {get;set;}
@@ -97,7 +98,7 @@ public with sharing class CreateFutureChecks
 		List<Item_Check__c> checksCreated = new List<Item_Check__c>();
 		
 		List<Item_Check_Frequency__c> checks = [select ID, Facility_Item__c, Frequency__c
-			from Item_Check_Frequency__c where Facility_Item__r.Maintenance_Status__c = 'OK'];
+			from Item_Check_Frequency__c]; //  where Facility_Item__r.Maintenance_Status__c = 'OK'];
 	
 		// get a list of the frequency times
 		Set <ID>freqs = new Set<ID>();		

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <customSettingsVisibility>Protected</customSettingsVisibility>
+    <description>Settings for exporting to SEPA</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>NI_BIC__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Northern Ireland BIC</inlineHelpText>
+        <label>NI BIC</label>
+        <length>11</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>NI_IBAN__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Northern Ireland IBAN</inlineHelpText>
+        <label>NI IBAN</label>
+        <length>34</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>NI_SEPA_OIN__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Initiating Party Organisation Id (Creditor ID) - Northern Ireland</inlineHelpText>
+        <label>NI SEPA OIN</label>
+        <length>35</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ROI_BIC__c</fullName>
+        <defaultValue>&quot;AIBKIE20XXX&quot;</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Republic of Ireland BIC</inlineHelpText>
+        <label>ROI BIC</label>
+        <length>11</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ROI_IBAN__c</fullName>
+        <defaultValue>&quot;IE31AIBK00000000000000&quot;</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Republic of Ireland IBAN</inlineHelpText>
+        <label>ROI IBAN</label>
+        <length>34</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ROI_SEPA_OIN__c</fullName>
+        <defaultValue>&quot;IE38SDD350003&quot;</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Initiating Party Organisation Id (Creditor ID) - Republic of Ireland</inlineHelpText>
+        <label>ROI SEPA OIN</label>
+        <length>35</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>SEPA Settings</label>
+</CustomObject>

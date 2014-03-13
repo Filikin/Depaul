@@ -1,0 +1,91 @@
+<apex:page standardController="Opportunity" extensions="PushDonationsToBankFileController" recordSetVar="donations" cache="false" contentType="text/xml#sepaPAIN008.xml" showHeader="false" sidebar="false" action="{!pushToXML}">
+	<?xml version="1.0" encoding="UTF-8" ?>
+ 	<Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:iso:std:iso:20022:tech:xsd:pain.008.001.02">
+ <CstmrDrctDbtInitn>
+		<GrpHdr>
+			<MsgId>{!messageID}</MsgId>
+			<CreDtTm>{!timeStamp}</CreDtTm>
+			<NbOfTxs>{!numberOfTransactions}</NbOfTxs>
+			<CtrlSum><apex:outputText value="{0,number,#####.00}"><apex:param value="{!SumTransactions}"/></apex:outputText></CtrlSum>
+			<InitgPty>
+				<Id>
+					<OrgId>
+						<Othr>
+							<Id>{!$Setup.SEPA_Settings__c.ROI_SEPA_OIN__c}</Id>
+						</Othr>
+					</OrgId>
+				</Id>
+			</InitgPty>
+		</GrpHdr>
+		<PmtInf>
+			<PmtInfId>{!paymentInfoID1}</PmtInfId>
+			<PmtMtd>DD</PmtMtd>
+			<NbOfTxs>{!numberOfTransactions}</NbOfTxs>
+			<CtrlSum><apex:outputText value="{0,number,#####.00}"><apex:param value="{!SumTransactions}"/></apex:outputText></CtrlSum>
+			<PmtTpInf>
+				<SvcLvl>
+					<Cd>SEPA</Cd>
+				</SvcLvl>
+				<LclInstrm>
+					<Cd>CORE</Cd>
+				</LclInstrm>
+				<SeqTp>{!sequenceType}</SeqTp>
+			</PmtTpInf>
+			<ReqdColltnDt>{!collectionDate}</ReqdColltnDt>
+			<Cdtr>
+				<Nm>{!$Organization.Name}</Nm>
+			</Cdtr>
+			<CdtrAcct>
+				<Id>
+					<IBAN>{!$Setup.SEPA_Settings__c.ROI_IBAN__c}</IBAN>
+				</Id>
+			</CdtrAcct>
+			<CdtrAgt>
+				<FinInstnId>
+					<BIC>{!$Setup.SEPA_Settings__c.ROI_BIC__c}</BIC>
+				</FinInstnId>
+			</CdtrAgt>
+   	<apex:repeat value="{!DonationList}" var="oneDonation">
+			<DrctDbtTxInf>
+				<PmtId>
+					<EndToEndId>{!CASESAFEID(oneDonation.ID)}</EndToEndId>
+				</PmtId>
+				<InstdAmt Ccy="EUR"><apex:outputText value="{0,number,#####.00}"><apex:param value="{!oneDonation.Amount}"/></apex:outputText></InstdAmt>
+				<DrctDbtTx>
+					 <MndtRltdInf>
+						 <MndtId>{!CASESAFEID(oneDonation.Mandate_Reference__c)}</MndtId>
+						<DtOfSgntr>{!oneDonation.Mandate_Date_of_Signature__c}</DtOfSgntr>
+						  <AmdmntInd>false</AmdmntInd>
+					</MndtRltdInf> 
+					 <CdtrSchmeId>
+						 <Id>
+							 <PrvtId>
+								<Othr>
+									<Id>{!$Setup.SEPA_Settings__c.ROI_SEPA_OIN__c}</Id>
+									  <SchmeNm>
+										 <Prtry>SEPA</Prtry> 
+									</SchmeNm>  
+								</Othr>
+							</PrvtId>
+						</Id>  
+					</CdtrSchmeId> 
+				</DrctDbtTx>
+				<DbtrAgt>
+					<FinInstnId>
+						<BIC>{!oneDonation.Donor_BIC__c}</BIC>
+					</FinInstnId>
+				</DbtrAgt>
+				<Dbtr>
+					<Nm>{!oneDonation.Donor_Name__c}</Nm>
+				</Dbtr>
+				<DbtrAcct>
+					<Id>
+						<IBAN>{!oneDonation.Donor_IBAN__c}</IBAN>
+					</Id>
+				</DbtrAcct>
+			</DrctDbtTxInf>
+</apex:repeat>
+		</PmtInf>
+	</CstmrDrctDbtInitn>
+	    </Document>
+</apex:page>

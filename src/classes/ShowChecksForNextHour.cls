@@ -13,7 +13,12 @@ public with sharing class ShowChecksForNextHour
 		if (checkSettings.User_check_minutes_before_hour__c == null)
 		{
 			checkSettings = new Check_Settings__c (Item_check_minutes_before_hour__c=15, User_check_minutes_before_hour__c=15, Show_item_checks_in_future_minutes__c=60, Show_user_checks_in_future_minutes__c=60);
-			insert checkSettings;
+			try {
+				insert checkSettings;
+			}
+			catch (Exception e){
+				system.debug ('Failed to insert new setting');
+			}
 		}
 	}
 
