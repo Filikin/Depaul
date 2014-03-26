@@ -1,5 +1,4 @@
-<apex:page Controller="CreateFutureChecks" action="{!createTodaysChecks}" showHeader="false" sidebar="false">
+<apex:page Controller="CreateFutureChecks" action="{!createTodaysWellbeingChecks}" showHeader="false" sidebar="false">
 Wellbeing Checks Created: {!WellbeingNumberCreated}<br/>
-Item Checks Created: {!ItemNumberCreated}
 <apex:messages />
 </apex:page>

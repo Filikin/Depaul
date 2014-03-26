@@ -50,4 +50,12 @@ public with sharing class AppConfigSupport {
 			return GetAppSettings().Disable_Triggers__c;
 		}
 	}
+	
+	public static Boolean DuplicateCheckDisabled
+	{
+		get
+		{
+			return GetAppSettings().Disable_Duplicate_Checks__c;
+		}
+	}
 }

@@ -12,13 +12,12 @@ private class TestPushDonationsToBankFile
  		
  		test.startTest();
 		PushDonationsToBankFileController pc = new PushDonationsToBankFileController(2);
- 		pc.getDonationList();
+ 		pc.getSEPATransactionCodeList();
  		pc.getMessageID();
  		pc.getCollectionDate();
  		pc.getNumberOfTransactions();
  		pc.getPaymentInfoID1();
  		pc.getSequenceType();
- 		pc.getSumTransactions();
  		pc.getTimeStamp();
  		pc.ProcessDonations();
  		pc.pushToXML();

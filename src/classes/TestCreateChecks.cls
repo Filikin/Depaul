@@ -7,10 +7,12 @@ private class TestCreateChecks
 {
 	static public List<Contact> CreateServiceUsers (Integer userCount)
 	{
+		ID ClientRecordTypeID = [select ID from RecordType where sObjectType='Contact' and DeveloperName='Client'].id;
 		List<Contact>serviceUsers = new List<Contact>();
+		
 		for (Integer i=1; i<=userCount; i++)
 		{
-			serviceUsers.add (new Contact (lastName='ServiceUser'+i));
+			serviceUsers.add (new Contact (lastName='ServiceUser'+i, RecordTypeID=ClientRecordTypeID));
 			
 		}
 		insert serviceUsers;
@@ -104,7 +106,10 @@ private class TestCreateChecks
     	
     	Test.startTest();
     	ScheduleFutureChecks sch = new ScheduleFutureChecks();
-    	system.schedule('Test create checks', '0 0 18 * * ?', sch);
+    	system.schedule('Test create schedule checks', '0 0 18 * * ?', sch);
+
+    	ScheduleFutureItemChecks schItem = new ScheduleFutureItemChecks();
+    	system.schedule('Test create item checks', '0 0 18 * * ?', schItem);
     	Test.stopTest();
 
     	List<Wellbeing_Check__c> wellBeingChecks = [select ID from Wellbeing_Check__c];

@@ -6,7 +6,7 @@
 			<MsgId>{!messageID}</MsgId>
 			<CreDtTm>{!timeStamp}</CreDtTm>
 			<NbOfTxs>{!numberOfTransactions}</NbOfTxs>
-			<CtrlSum><apex:outputText value="{0,number,#####.00}"><apex:param value="{!SumTransactions}"/></apex:outputText></CtrlSum>
+			<CtrlSum><apex:outputText value="{0,number,#####.00}"><apex:param value="{!SumOfTransactions}"/></apex:outputText></CtrlSum>
 			<InitgPty>
 				<Id>
 					<OrgId>
@@ -17,11 +17,13 @@
 				</Id>
 			</InitgPty>
 		</GrpHdr>
+		<apex:repeat value="{!SEPATransactionCodeList}" var="oneCode">
+		<apex:outputText rendered="{!oneCode.numberOfTransactions>0}">
 		<PmtInf>
 			<PmtInfId>{!paymentInfoID1}</PmtInfId>
 			<PmtMtd>DD</PmtMtd>
-			<NbOfTxs>{!numberOfTransactions}</NbOfTxs>
-			<CtrlSum><apex:outputText value="{0,number,#####.00}"><apex:param value="{!SumTransactions}"/></apex:outputText></CtrlSum>
+			<NbOfTxs>{!oneCode.numberOfTransactions}</NbOfTxs>
+			<CtrlSum><apex:outputText value="{0,number,#####.00}"><apex:param value="{!oneCode.SumOfTransactions}"/></apex:outputText></CtrlSum>
 			<PmtTpInf>
 				<SvcLvl>
 					<Cd>SEPA</Cd>
@@ -29,7 +31,7 @@
 				<LclInstrm>
 					<Cd>CORE</Cd>
 				</LclInstrm>
-				<SeqTp>{!sequenceType}</SeqTp>
+				<SeqTp>{!oneCode.sepaCode}</SeqTp>
 			</PmtTpInf>
 			<ReqdColltnDt>{!collectionDate}</ReqdColltnDt>
 			<Cdtr>
@@ -45,7 +47,7 @@
 					<BIC>{!$Setup.SEPA_Settings__c.ROI_BIC__c}</BIC>
 				</FinInstnId>
 			</CdtrAgt>
-   	<apex:repeat value="{!DonationList}" var="oneDonation">
+   	<apex:repeat value="{!oneCode.Donations}" var="oneDonation">
 			<DrctDbtTxInf>
 				<PmtId>
 					<EndToEndId>{!CASESAFEID(oneDonation.ID)}</EndToEndId>
@@ -86,6 +88,8 @@
 			</DrctDbtTxInf>
 </apex:repeat>
 		</PmtInf>
+		</apex:outputText>
+		</apex:repeat>
 	</CstmrDrctDbtInitn>
 	    </Document>
 </apex:page>

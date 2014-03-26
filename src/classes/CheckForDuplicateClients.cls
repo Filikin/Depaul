@@ -9,7 +9,7 @@ public without sharing class CheckForDuplicateClients implements TriggerDispatch
 	public void MainEntry (String TriggerObject, Boolean isBefore, Boolean isDelete, Boolean isAfter, Boolean isInsert, Boolean isUpdate, Boolean isExecuting,
 		List<SObject> newList, Map<Id, SObject> newMap, List<SObject> oldList, Map<Id, SObject> oldMap)
 	{
-		if (AppConfigSupport.TriggersDisabled) return;
+		if (AppConfigSupport.DuplicateCheckDisabled) return;
 		if (isBefore)
 		{
 			if (isInsert) CheckDuplicates (newList, new set<ID>()); // pass an empty set is an insert (these contacts don't have IDs)

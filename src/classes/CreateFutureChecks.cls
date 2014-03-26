@@ -15,26 +15,32 @@ public with sharing class CreateFutureChecks
 	{
 	}
 	
-	public void CreateChecks ()
+	public void CreateChecks (Boolean wellbeingChecks)
 	{
 		dayName = readableDay(system.today()+dayInFuture);
 		startTime = DateTime.newInstance(system.today()+dayInFuture, Time.newInstance(0, 0, 0, 0));
 		endTime = DateTime.newInstance(system.today()+dayInFuture, Time.newInstance(23, 59, 59, 0));
-		WellbeingNumberCreated = CreateWellBeingChecks ();
-		ItemNumberCreated = CreateItemChecks ();
-		system.debug ('Item checks created: ' + ItemNumberCreated);
+		
+		if (wellbeingChecks) WellbeingNumberCreated = CreateWellBeingChecks ();
+		else ItemNumberCreated = CreateItemChecks ();
 		for (Integer i=0; i<10; i++)
 		{
-			if (RemoveDuplicateChecks () == 0) break;// may have to do a second pass if we find too many duplicates
+			if (RemoveDuplicateChecks (wellbeingChecks) == 0) break;// may have to do a second pass if we find too many duplicates
 		}
 	}
 	
-	public void createTodaysChecks ()
+	public void createTodaysWellbeingChecks ()
 	{
 		dayInFuture=0;
-		CreateChecks();
+		CreateChecks(true);
 	}
 	
+	public void createTodaysItemChecks ()
+	{
+		dayInFuture=0;
+		CreateChecks(false);
+	}
+
 	public Integer CreateWellBeingChecks ()
 	{
 		List<Wellbeing_Check__c> checksCreated = new List<Wellbeing_Check__c>();
@@ -139,59 +145,63 @@ public with sharing class CreateFutureChecks
 		else return 0;
 	}
 	
-	public Integer RemoveDuplicateChecks ()
+	public Integer RemoveDuplicateChecks (Boolean wellbeingChecks)
 	{
 		Integer checksRemoved = 0;
 		Set<ID> checksToRemove = new Set<ID>();
-		List<Wellbeing_Check__c> tomorrowsChecks = [select ID, Residency__c, Residency__r.Name, Time_of_Check__c, Check_type__c from Wellbeing_Check__c where Time_of_Check__c <= :endTime and Time_of_Check__c >= :startTime order by Residency__r.Name asc, Time_of_Check__c asc];
-		if (tomorrowsChecks.size() > 1)
+		if (wellbeingChecks)
 		{
-			for (Integer checkNo = 0; checkNo<tomorrowsChecks.size(); checkNo++)
-				system.debug ('Order ' + checkNo + ' ' + tomorrowsChecks[checkNo].Residency__r.Name + ' ' + tomorrowsChecks[checkNo].Time_of_Check__c + ' ' + tomorrowsChecks[checkNo].Check_type__c);
-				
-			for (Integer checkNo = 1; checkNo<tomorrowsChecks.size(); checkNo++)
+			List<Wellbeing_Check__c> tomorrowsChecks = [select ID, Residency__c, Residency__r.Name, Time_of_Check__c, Check_type__c from Wellbeing_Check__c where Time_of_Check__c <= :endTime and Time_of_Check__c >= :startTime order by Residency__r.Name asc, Time_of_Check__c asc];
+			if (tomorrowsChecks.size() > 1)
 			{
-				// if this check is equal to the next one, them remove it and move on to the next
-				Integer keepWhich = wellbeingTimesEqual (tomorrowsChecks[checkNo-1], tomorrowsChecks[checkNo]);
-				if (keepWhich == 1)
+				for (Integer checkNo = 0; checkNo<tomorrowsChecks.size(); checkNo++)
+					system.debug ('Order ' + checkNo + ' ' + tomorrowsChecks[checkNo].Residency__r.Name + ' ' + tomorrowsChecks[checkNo].Time_of_Check__c + ' ' + tomorrowsChecks[checkNo].Check_type__c);
+					
+				for (Integer checkNo = 1; checkNo<tomorrowsChecks.size(); checkNo++)
 				{
-					checksToRemove.add (tomorrowsChecks[checkNo].ID);
-					system.debug ('One ' + checkNo + ' removing ' + tomorrowsChecks[checkNo].Time_of_Check__c + ' ' + tomorrowsChecks[checkNo].Check_type__c);
+					// if this check is equal to the next one, them remove it and move on to the next
+					Integer keepWhich = wellbeingTimesEqual (tomorrowsChecks[checkNo-1], tomorrowsChecks[checkNo]);
+					if (keepWhich == 1)
+					{
+						checksToRemove.add (tomorrowsChecks[checkNo].ID);
+						system.debug ('One ' + checkNo + ' removing ' + tomorrowsChecks[checkNo].Time_of_Check__c + ' ' + tomorrowsChecks[checkNo].Check_type__c);
+					}
+					else if (keepWhich == 2)
+					{
+						checksToRemove.add (tomorrowsChecks [checkNo-1].ID);
+						system.debug ('Two ' + checkNo + ' removing ' + tomorrowsChecks[checkNo-1].Time_of_Check__c + ' ' + tomorrowsChecks[checkNo-1].Check_type__c);
+					}
 				}
-				else if (keepWhich == 2)
+				if (checksToRemove.size() > 0) 
 				{
-					checksToRemove.add (tomorrowsChecks [checkNo-1].ID);
-					system.debug ('Two ' + checkNo + ' removing ' + tomorrowsChecks[checkNo-1].Time_of_Check__c + ' ' + tomorrowsChecks[checkNo-1].Check_type__c);
-				}
+					checksRemoved = checksToRemove.size();
+					delete [select ID from Wellbeing_Check__c where ID in :checksToRemove];
+				}			
 			}
-			if (checksToRemove.size() > 0) 
-			{
-				checksRemoved = checksToRemove.size();
-				delete [select ID from Wellbeing_Check__c where ID in :checksToRemove];
-			}			
 		} 
-
-		checksToRemove = new Set<ID>();
-		List<Item_Check__c> tomorrowItemChecks = [select ID, Area__c, Area_Item__c, Area_Item__r.Name, Time_of_Check__c from Item_Check__c where Time_of_Check__c <= :endTime and Time_of_Check__c >= :startTime order by Area__c, Area_Item__r.Name asc, Time_of_Check__c asc];
-		if (tomorrowItemChecks.size() > 1)
+		else
 		{
-			for (Integer checkNo = 0; checkNo<tomorrowItemChecks.size(); checkNo++)
-				system.debug ('Order ' + checkNo + ' ' + tomorrowItemChecks[checkNo].Area_Item__r.Name + ' ' + tomorrowItemChecks[checkNo].Time_of_Check__c);
-				
-			for (Integer checkNo = 1; checkNo<tomorrowItemChecks.size(); checkNo++)
+			List<Item_Check__c> tomorrowItemChecks = [select ID, Area__c, Area_Item__c, Area_Item__r.Name, Time_of_Check__c from Item_Check__c where Time_of_Check__c <= :endTime and Time_of_Check__c >= :startTime order by Area__c, Area_Item__r.Name asc, Time_of_Check__c asc];
+			if (tomorrowItemChecks.size() > 1)
 			{
-				// if this check is equal to the next one, them remove it and move on to the next
-				if (tomorrowItemChecks[checkNo-1].Time_of_Check__c == tomorrowItemChecks[checkNo].Time_of_Check__c && tomorrowItemChecks[checkNo-1].Area__c == tomorrowItemChecks[checkNo].Area__c && tomorrowItemChecks[checkNo-1].Area_Item__r.Name == tomorrowItemChecks[checkNo].Area_Item__r.Name)
+				for (Integer checkNo = 0; checkNo<tomorrowItemChecks.size(); checkNo++)
+					system.debug ('Order ' + checkNo + ' ' + tomorrowItemChecks[checkNo].Area_Item__r.Name + ' ' + tomorrowItemChecks[checkNo].Time_of_Check__c);
+					
+				for (Integer checkNo = 1; checkNo<tomorrowItemChecks.size(); checkNo++)
 				{
-					checksToRemove.add (tomorrowItemChecks[checkNo].ID);
-					system.debug (checkNo + ' removing ' + tomorrowItemChecks[checkNo].Time_of_Check__c);
+					// if this check is equal to the next one, them remove it and move on to the next
+					if (tomorrowItemChecks[checkNo-1].Time_of_Check__c == tomorrowItemChecks[checkNo].Time_of_Check__c && tomorrowItemChecks[checkNo-1].Area__c == tomorrowItemChecks[checkNo].Area__c && tomorrowItemChecks[checkNo-1].Area_Item__r.Name == tomorrowItemChecks[checkNo].Area_Item__r.Name)
+					{
+						checksToRemove.add (tomorrowItemChecks[checkNo].ID);
+						system.debug (checkNo + ' removing ' + tomorrowItemChecks[checkNo].Time_of_Check__c);
+					}
 				}
+				if (checksToRemove.size() > 0) 
+				{
+					checksRemoved += checksToRemove.size();
+					delete [select ID from Item_Check__c where ID in :checksToRemove];
+				}			
 			}
-			if (checksToRemove.size() > 0) 
-			{
-				checksRemoved += checksToRemove.size();
-				delete [select ID from Item_Check__c where ID in :checksToRemove];
-			}			
 		} 
 		return checksRemoved;
 	}
