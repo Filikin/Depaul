@@ -1,0 +1,12 @@
+<apex:page standardController="ecass01__Care_Plan_Objective__c" extensions="CloneSupportPlan" showHeader="true" action="{!clonePlan}">
+{!ecass01__Care_Plan_Objective__c.ecass01__Client__c}
+{!ecass01__Care_Plan_Objective__c.Name}
+{!ecass01__Care_Plan_Objective__c.Support_Plan_Status__c}
+{!ecass01__Care_Plan_Objective__c.ecass01__Date_objective_set__c}
+{!ecass01__Care_Plan_Objective__c.Needs_Assessment__c}
+{!ecass01__Care_Plan_Objective__c.ecass01__Lead_Key_Worker_name__c}
+{!ecass01__Care_Plan_Objective__c.ecass01__Lead_key_worker_from_other_agency__c}
+{!ecass01__Care_Plan_Objective__c.LMT_Member__c}
+{!ecass01__Care_Plan_Objective__c.ecass01__Work_to_be_done_to_achieve_objective__c}
+<apex:messages />
+</apex:page>

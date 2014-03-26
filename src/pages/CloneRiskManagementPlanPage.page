@@ -1,0 +1,34 @@
+<apex:page standardController="Risk_Management_Plan__c" extensions="CloneRiskManagementPlan" showHeader="true" action="{!clonePlan}">
+{!Risk_Management_Plan__c.Name}
+{!Risk_Management_Plan__c.Risk_Assessment__c}
+{!Risk_Management_Plan__c.Identified_Risk__c}
+{!Risk_Management_Plan__c.RMP_Status__c}
+{!Risk_Management_Plan__c.Controls_in_place_Action_needed_1__c}
+{!Risk_Management_Plan__c.Date__c}
+{!Risk_Management_Plan__c.By_Whom_1__c}
+{!Risk_Management_Plan__c.RMP_Support_Action_Status__c}
+{!Risk_Management_Plan__c.Control_Action_2__c}
+{!Risk_Management_Plan__c.Control_Action_2_By_When__c}
+{!Risk_Management_Plan__c.Who_will_complete_Control_Action_2__c}
+{!Risk_Management_Plan__c.Control_Action_2_Status__c}
+{!Risk_Management_Plan__c.Control_Action_3__c}
+{!Risk_Management_Plan__c.Control_Action_3_By_When__c}
+{!Risk_Management_Plan__c.Control_Action_3_By_Whom__c}
+{!Risk_Management_Plan__c.Control_Action_3_Status__c}
+{!Risk_Management_Plan__c.Control_Action_4__c}
+{!Risk_Management_Plan__c.Control_Action_4_By_When__c}
+{!Risk_Management_Plan__c.Control_Action_4_By_Whom__c}
+{!Risk_Management_Plan__c.Control_Action_4_Status__c}
+{!Risk_Management_Plan__c.Control_Action_5__c}
+{!Risk_Management_Plan__c.Control_Action_5_By_When__c}
+{!Risk_Management_Plan__c.Control_Action_5_By_Whom__c}
+{!Risk_Management_Plan__c.Control_Action_5_Status__c}
+{!Risk_Management_Plan__c.Control_Action_6__c}
+{!Risk_Management_Plan__c.Control_Action_6_By_When__c}
+{!Risk_Management_Plan__c.Control_Action_6_By_Whom__c}
+{!Risk_Management_Plan__c.Control_Action_6_Status__c}
+{!Risk_Management_Plan__c.Likelihood_of_risk_occurring1__c}
+{!Risk_Management_Plan__c.Risk_Details__c}
+{!Risk_Management_Plan__c.Severity_of_risk_score1__c}
+<apex:messages />
+</apex:page>

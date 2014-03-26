@@ -1,0 +1,4 @@
+<apex:page Controller="CreateFutureChecks" action="{!createTodaysItemChecks}" showHeader="false" sidebar="false">
+Item Checks Created: {!ItemNumberCreated}
+<apex:messages />
+</apex:page>
