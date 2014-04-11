@@ -5,6 +5,15 @@
     <description>Settings for the default names of some objects</description>
     <enableFeeds>false</enableFeeds>
     <fields>
+        <fullName>Disable_Duplicate_Checks__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Turn this on to disable checking for duplicate clients</inlineHelpText>
+        <label>Disable Duplicate Checks</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Disable_Triggers__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

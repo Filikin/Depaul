@@ -5,6 +5,20 @@
     <description>Settings for exporting to SEPA</description>
     <enableFeeds>false</enableFeeds>
     <fields>
+        <fullName>Day_of_the_month_for_collection__c</fullName>
+        <defaultValue>2</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>When generating the SEPA XML file, all the transactions will be collected on the same date.
+If the day above is already past in the current month, then the collection date will be set to this date in the next month.</inlineHelpText>
+        <label>Day of the month for collection</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>NI_BIC__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Northern Ireland BIC</inlineHelpText>

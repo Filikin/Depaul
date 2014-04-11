@@ -64,7 +64,8 @@ public with sharing class PushDonationsToBankFileController
 	{
 		Date collDate;
 		SEPA_Settings__c theobject = SEPA_Settings__c.getOrgDefaults();
-		if(theobject==null) 
+		system.debug ('SEPA settings: ' + theobject);
+		if(theobject==null || theobject == new SEPA_Settings__c()) // check on not null and not empty
 		{
 			theobject = new SEPA_Settings__c();
 			theobject.name = 'default';
@@ -90,6 +91,12 @@ public with sharing class PushDonationsToBankFileController
 	{
 		collectionDate = calculateCollectionDate (system.today());
 		
+		/* Valid values are:
+			FRST – for First presentation
+			RCUR – for Recurrent presentation
+			OOFF – for Once off presentation
+			FNAL – for Final presentation
+		*/
 		for (String transCode: new list<String>{'FRST', 'RCUR', 'OOFF', 'FNAL'})
 		{
 			DonationsWithOneSEPACode oneCode = new DonationsWithOneSEPACode (transCode, 
@@ -115,20 +122,9 @@ public with sharing class PushDonationsToBankFileController
 		return getMessageID() + '-1';
 	}
 	
-	public String getSequenceType ()
-	{
-		/* Valid values are:
-			FRST – for First presentation
-			RCUR – for Recurrent presentation
-			OOFF – for Once off presentation
-			FNAL – for Final presentation
-		*/
-		return 'FRST';	
-	}
-	
 	public String getCollectionDate ()
 	{
-		return system.now().addDays(8).format('YYYY-MM-dd'); // would be nice to use a custom setting here
+		return datetime.newInstance(collectionDate, time.newInstance(0,0,0,0)).format('YYYY-MM-dd');
 	}
 	
 	public pageReference pushToXML ()

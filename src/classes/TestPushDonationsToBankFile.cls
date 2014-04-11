@@ -17,7 +17,6 @@ private class TestPushDonationsToBankFile
  		pc.getCollectionDate();
  		system.assertEquals (2, pc.numberOfTransactions);
  		pc.getPaymentInfoID1();
- 		pc.getSequenceType();
  		pc.getTimeStamp();
  		pc.ProcessDonations();
  		pc.pushToXML();
