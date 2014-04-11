@@ -1,3 +1,9 @@
+/*
+Author: Eamon Kelly, Enclude
+Purpose: Produce an XML file in SEPA pain.008.001.02 format
+Called from: ushDonationsToBankFilePage and PushDonationsToSEPANI (for NI (Stg) - not used yet)
+Tested from: TestPushDonationsToBankFile
+*/
 public with sharing class PushDonationsToBankFileController 
 {
 	public class DonationsWithOneSEPACode
@@ -34,6 +40,8 @@ public with sharing class PushDonationsToBankFileController
 	private List<Opportunity> selectedDonationList;
 	private list<DonationsWithOneSEPACode> allDonationsByCode = new list<DonationsWithOneSEPACode>();
 	public Decimal sumOfTransactions {get;set;}
+	public Integer numberOfTransactions {get;set;}
+	private Date collectionDate;
 	
 	public list<DonationsWithOneSEPACode> getSEPATransactionCodeList ()
 	{
@@ -52,8 +60,36 @@ public with sharing class PushDonationsToBankFileController
 		Initialise();
 	}
 
+	public Date calculateCollectionDate (Date currentDate)
+	{
+		Date collDate;
+		SEPA_Settings__c theobject = SEPA_Settings__c.getOrgDefaults();
+		if(theobject==null) 
+		{
+			theobject = new SEPA_Settings__c();
+			theobject.name = 'default';
+			if(!Test.isRunningTest()) Database.Insert(theobject);
+			else // set default test values (can be different from default values) 
+			{
+				theobject.Day_of_the_month_for_collection__c = 2;
+			}
+		}
+		if (currentDate.day() < theobject.Day_of_the_month_for_collection__c) 
+		{
+			collDate = Date.newInstance (currentDate.year(), currentDate.month(), (Integer)theobject.Day_of_the_month_for_collection__c);
+		}
+		else 
+		{
+			if (currentDate.month() == 12) collDate = Date.newInstance (currentDate.year(), 1, (Integer)theobject.Day_of_the_month_for_collection__c);
+			else collDate = Date.newInstance (currentDate.year(), currentDate.month()+1, (Integer)theobject.Day_of_the_month_for_collection__c); 
+		}
+		return collDate;  	
+	}
+	
 	public void Initialise ()
 	{
+		collectionDate = calculateCollectionDate (system.today());
+		
 		for (String transCode: new list<String>{'FRST', 'RCUR', 'OOFF', 'FNAL'})
 		{
 			DonationsWithOneSEPACode oneCode = new DonationsWithOneSEPACode (transCode, 
@@ -61,6 +97,7 @@ public with sharing class PushDonationsToBankFileController
     		allDonationsByCode.add (oneCode);
 		}
 		sumOfTransactions = (Decimal)([select sum(Amount) sumTransactions from Opportunity where id in :selectedDonationList and StageName = 'Pledged'][0].get('sumTransactions'));
+		numberOfTransactions = [select count() from Opportunity where id in :selectedDonationList and StageName = 'Pledged'];
 	}
 	
 	public String getMessageID ()
@@ -71,11 +108,6 @@ public with sharing class PushDonationsToBankFileController
 	public String getTimeStamp ()
 	{
 		return system.now().format('YYYY-MM-dd')+'T'+system.now().format('HH:mm:ss');
-	}
-	
-	public Integer getNumberOfTransactions ()
-	{
-		return  [select count() from Opportunity where id in :selectedDonationList and StageName = 'Pledged'];
 	}
 	
 	public String getPaymentInfoID1 ()
@@ -96,7 +128,7 @@ public with sharing class PushDonationsToBankFileController
 	
 	public String getCollectionDate ()
 	{
-		return system.now().addDays(6).format('YYYY-MM-dd'); // would be nice to use a custom setting here
+		return system.now().addDays(8).format('YYYY-MM-dd'); // would be nice to use a custom setting here
 	}
 	
 	public pageReference pushToXML ()

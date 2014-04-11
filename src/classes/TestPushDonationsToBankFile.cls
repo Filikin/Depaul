@@ -15,12 +15,15 @@ private class TestPushDonationsToBankFile
  		pc.getSEPATransactionCodeList();
  		pc.getMessageID();
  		pc.getCollectionDate();
- 		pc.getNumberOfTransactions();
+ 		system.assertEquals (2, pc.numberOfTransactions);
  		pc.getPaymentInfoID1();
  		pc.getSequenceType();
  		pc.getTimeStamp();
  		pc.ProcessDonations();
  		pc.pushToXML();
  		test.stopTest();
+ 		
+ 		
+ 		
  	}
 }
